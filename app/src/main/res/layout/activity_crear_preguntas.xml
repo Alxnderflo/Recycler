@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F5F5F5"
+    android:orientation="vertical"
+    android:padding="24dp">
+
+    <!-- Título: Enunciado de la pregunta -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="Enunciado de la pregunta *"
+        android:textColor="#333333"
+        android:textSize="14sp"
+        android:textStyle="bold" />
+
+    <!-- Campo de texto: Pregunta -->
+    <EditText
+        android:id="@+id/etPregunta"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/edit_text_background"
+        android:hint="Escribe una pregunta"
+        android:inputType="text"
+        android:padding="16dp"
+        android:textColor="#333333"
+        android:textColorHint="#CCCCCC"
+        android:textSize="16sp" />
+
+    <!-- Título: Respuesta correcta -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="Respuesta correcta *"
+        android:textColor="#333333"
+        android:textSize="14sp"
+        android:textStyle="bold" />
+
+    <!-- Campo de texto: Respuesta correcta -->
+    <EditText
+        android:id="@+id/etRespuestaCorrecta"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_marginBottom="20dp"
+        android:background="@drawable/edit_text_background"
+        android:hint="Escribe la respuesta correcta"
+        android:inputType="text"
+        android:padding="16dp"
+        android:textColor="#333333"
+        android:textColorHint="#CCCCCC"
+        android:textSize="16sp" />
+
+    <!-- Título: Respuesta incorrecta -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:text="Respuesta incorrecta *"
+        android:textColor="#333333"
+        android:textSize="14sp"
+        android:textStyle="bold" />
+
+    <!-- Campo de texto: Respuesta incorrecta -->
+    <EditText
+        android:id="@+id/etRespuestaIncorrecta"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:layout_marginBottom="32dp"
+        android:background="@drawable/edit_text_background"
+        android:hint="Respuesta incorrecta"
+        android:inputType="text"
+        android:padding="16dp"
+        android:textColor="#333333"
+        android:textColorHint="#CCCCCC"
+        android:textSize="16sp" />
+
+    <!-- Botón Guardar Pregunta -->
+    <Button
+        android:id="@+id/btnGuardarPregunta"
+        android:layout_width="match_parent"
+        android:layout_height="56dp"
+        android:backgroundTint="#7FC1AF"
+        android:elevation="4dp"
+        android:text="Guardar Pregunta"
+        android:textColor="#FFFFFF"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+</LinearLayout>

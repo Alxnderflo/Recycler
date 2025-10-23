@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:padding="16dp"
+    android:background="@drawable/item_pregunta_background">
+
+    <TextView
+        android:id="@+id/tvEnunciado"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Enunciado"
+        android:textColor="#000"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/tvCorrecta"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text="Correcta"
+        android:textColor="#4CAF50"
+        android:textSize="14sp" />
+
+    <TextView
+        android:id="@+id/tvIncorrecta"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:text="Incorrecta"
+        android:textColor="#F44336"
+        android:textSize="14sp" />
+
+</LinearLayout>
