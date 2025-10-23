@@ -68,14 +68,12 @@ public class CrearPreguntasActivity extends AppCompatActivity {
                     Log.e("CrearPregunta", "Error al sincronizar: " + e.getMessage());
                 });
 
-        // Feedback INMEDIATO y cierre de actividad
+        // Feedback INMEDIATO
         Toast.makeText(this, "Pregunta guardada localmente", Toast.LENGTH_SHORT).show();
 
         // Limpiar campos
         etPregunta.setText("");
         etRespuestaCorrecta.setText("");
         etRespuestaIncorrecta.setText("");
-
-        finish();
     }
 }
