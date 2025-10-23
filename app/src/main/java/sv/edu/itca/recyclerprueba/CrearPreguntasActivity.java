@@ -3,6 +3,7 @@ package sv.edu.itca.recyclerprueba;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
@@ -54,15 +55,27 @@ public class CrearPreguntasActivity extends AppCompatActivity {
 
         Pregunta pregunta = new Pregunta(enunciado, correcta, incorrecta);
 
+        // Guardar pregunta - NO esperar callback para cerrar actividad
         db.collection("contacts2").document(contactoId)
                 .collection("preguntas")
                 .add(pregunta)
                 .addOnSuccessListener(documentReference -> {
-                    Toast.makeText(this, "Pregunta agregada", Toast.LENGTH_SHORT).show();
-                    finish();
+                    // Éxito remoto - solo log
+                    Log.d("CrearPregunta", "Pregunta sincronizada con ID: " + documentReference.getId());
                 })
                 .addOnFailureListener(e -> {
-                    Toast.makeText(this, "Error al guardar la pregunta", Toast.LENGTH_SHORT).show();
+                    // Error remoto - solo log, la pregunta ya está en cache local
+                    Log.e("CrearPregunta", "Error al sincronizar: " + e.getMessage());
                 });
+
+        // Feedback INMEDIATO y cierre de actividad
+        Toast.makeText(this, "Pregunta guardada localmente", Toast.LENGTH_SHORT).show();
+
+        // Limpiar campos
+        etPregunta.setText("");
+        etRespuestaCorrecta.setText("");
+        etRespuestaIncorrecta.setText("");
+
+        finish();
     }
 }

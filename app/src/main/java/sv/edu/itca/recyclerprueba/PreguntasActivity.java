@@ -8,11 +8,18 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Toast;
+
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.FirebaseFirestoreException;
+import com.google.firebase.firestore.QuerySnapshot;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -74,30 +81,30 @@ public class PreguntasActivity extends AppCompatActivity {
     private void cargarPreguntas() {
         db.collection("contacts2").document(contactoId)
                 .collection("preguntas")
-                .get()
-                .addOnSuccessListener(queryDocumentSnapshots -> {
-                    listaPreguntas.clear();
-                    for (DocumentSnapshot snapshot : queryDocumentSnapshots.getDocuments()) {
-                        Pregunta pregunta = snapshot.toObject(Pregunta.class);
-                        if (pregunta != null) {
-                            listaPreguntas.add(pregunta);
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
+                        if (error != null) {
+                            Log.e("PreguntasActivity", "Error al cargar preguntas: " + error.getMessage());
+                            mostrarVistaVacia();
+                            return;
+                        }
+
+                        if (value != null && !value.isEmpty()) {
+                            listaPreguntas.clear();
+                            for (DocumentSnapshot snapshot : value.getDocuments()) {
+                                Pregunta pregunta = snapshot.toObject(Pregunta.class);
+                                if (pregunta != null) {
+                                    listaPreguntas.add(pregunta);
+                                }
+                            }
+                            adapter.notifyDataSetChanged();
+                            mostrarListaPreguntas();
+                        } else {
+                            mostrarVistaVacia();
                         }
                     }
-                    adapter.notifyDataSetChanged();
-                    actualizarVista();
-                })
-                .addOnFailureListener(e -> {
-                    Toast.makeText(this, "Error al cargar preguntas", Toast.LENGTH_SHORT).show();
-                    mostrarVistaVacia();
                 });
-    }
-
-    private void actualizarVista() {
-        if (listaPreguntas.isEmpty()) {
-            mostrarVistaVacia();
-        } else {
-            mostrarListaPreguntas();
-        }
     }
 
     private void mostrarListaPreguntas() {
@@ -113,6 +120,6 @@ public class PreguntasActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        cargarPreguntas();
+        // El SnapshotListener ya mantiene la vista actualizada
     }
 }

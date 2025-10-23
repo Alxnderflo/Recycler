@@ -7,6 +7,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FieldValue;
 import com.google.firebase.firestore.FirebaseFirestore;
 import java.util.HashMap;
@@ -39,26 +40,31 @@ public class CrearContactoActivity extends AppCompatActivity {
             return;
         }
 
+        // Crear ID del documento ANTES de guardar para navegación inmediata
+        DocumentReference nuevoDocumento = db.collection("contacts2").document();
+        String nuevoId = nuevoDocumento.getId();
+
         Map<String, Object> contacto = new HashMap<>();
         contacto.put("name", nombre);
         contacto.put("phoneNo", telefono);
         contacto.put("fechaCreacion", FieldValue.serverTimestamp());
 
-        db.collection("contacts2")
-                .add(contacto)
-                .addOnSuccessListener(documentReference -> {
-                    String nuevoId = documentReference.getId();
-                    Log.d("CrearContacto", "Contacto creado con ID: " + nuevoId);
-                    Toast.makeText(this, "Contacto guardado", Toast.LENGTH_SHORT).show();
-
-                    Intent intent = new Intent(CrearContactoActivity.this, PreguntasActivity.class);
-                    intent.putExtra("contacto_id", nuevoId);
-                    startActivity(intent);
-                    finish();
+        // Guardar contacto - NO esperar callbacks para navegación
+        nuevoDocumento.set(contacto)
+                .addOnSuccessListener(aVoid -> {
+                    Log.d("CrearContacto", "Contacto sincronizado con ID: " + nuevoId);
                 })
                 .addOnFailureListener(e -> {
-                    Toast.makeText(this, "Error al guardar", Toast.LENGTH_SHORT).show();
-                    Log.e("CrearContacto", "Error: " + e.getMessage());
+                    Log.e("CrearContacto", "Error al sincronizar: " + e.getMessage());
+                    // El contacto ya está en cache local, se sincronizará después
                 });
+
+        // Navegación INMEDIATA sin esperar callbacks
+        Toast.makeText(this, "Contacto guardado localmente", Toast.LENGTH_SHORT).show();
+
+        Intent intent = new Intent(CrearContactoActivity.this, PreguntasActivity.class);
+        intent.putExtra("contacto_id", nuevoId);
+        startActivity(intent);
+        finish();
     }
 }

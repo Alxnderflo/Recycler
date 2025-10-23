@@ -6,17 +6,20 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,7 +30,8 @@ public class HomeFragment extends Fragment {
     private List<String> listaContactosIds;
     private FirebaseFirestore bd;
 
-    public HomeFragment() {}
+    public HomeFragment() {
+    }
 
     public static HomeFragment newInstance() {
         return new HomeFragment();
@@ -87,7 +91,8 @@ public class HomeFragment extends Fragment {
                     @Override
                     public void onEvent(@Nullable QuerySnapshot value, @Nullable FirebaseFirestoreException error) {
                         if (error != null) {
-                            Log.e("HomeFragment", "Error: " + error.getMessage());
+                            Log.e("HomeFragment", "Error cargando contactos: " + error.getMessage());
+                            // No mostrar Toast para evitar spam en modo offline
                             return;
                         }
                         if (value != null) {
@@ -105,6 +110,12 @@ public class HomeFragment extends Fragment {
 
                             adapterContactos.actualizarIds(listaContactosIds);
                             adapterContactos.notifyDataSetChanged();
+
+                            // Mostrar mensaje si no hay contactos
+                            if (listaContactos.isEmpty()) {
+                                // Puedes agregar un TextView vacío si lo deseas
+                                Log.d("HomeFragment", "No hay contactos para mostrar");
+                            }
                         }
                     }
                 });
